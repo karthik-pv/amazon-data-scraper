@@ -58,7 +58,7 @@ async function parseHTMLStringAndFetchRelevantContent() {
         "-------------------------------------------------------------------------------------------------------";
       dataString += "\n";
     }
-    console.log("Datastring = " + dataString);
+    console.log(dataString);
     return dataString;
   } catch (error) {
     console.log("something went wrong " + error.message);
@@ -79,6 +79,9 @@ function processProductString(inputString, title) {
       "SponsoredSponsored You are seeing this ad based on the product’s relevance to your search query.Let us know";
     if (trimmedProduct.includes(sponsoredMessage)) {
       trimmedProduct = trimmedProduct.replace(sponsoredMessage, "").trim();
+      if (!trimmedProduct.toLowerCase().includes(title.toLowerCase())) {
+        return;
+      }
     }
 
     const firstRupeeIndex = trimmedProduct.indexOf("₹");
@@ -120,7 +123,7 @@ function processProductString(inputString, title) {
     productList.push(productObject);
   });
 
-  return productList;
+  return productList[0];
 }
 
-fetchHTMLFileFromAmazonAndProcess("les paul");
+fetchHTMLFileFromAmazonAndProcess("m audio midi controller");
