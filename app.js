@@ -2,7 +2,9 @@ const fs = require("fs");
 const path = require("path");
 const { JSDOM } = require("jsdom");
 
-const FilePath = path.join(__dirname + "/downloaded_page.html");
+const FilePath = path.join(
+  __dirname + "/static files" + "/downloaded_page.html"
+);
 
 async function fetchHTMLFileFromAmazonAndProcess(searchQuery) {
   const url = createAmazonURL(searchQuery);
@@ -33,6 +35,7 @@ async function makeFetchRequest(URL) {
       throw new Error("Network response was not ok");
     }
     const textContent = await response.text();
+    await fs.promises.mkdir(path.dirname(FilePath), { recursive: true });
     await fs.promises.writeFile(FilePath, textContent, "utf8");
   } catch (error) {
     console.error("Error fetching the HTML:", error);
@@ -120,4 +123,4 @@ function processProductString(inputString, title) {
   return productList;
 }
 
-fetchHTMLFileFromAmazonAndProcess("m audio");
+fetchHTMLFileFromAmazonAndProcess("les paul");
